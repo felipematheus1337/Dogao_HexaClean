@@ -28,6 +28,8 @@ public class PedidoEntity implements Serializable {
     private List<ItemEmbeddable> itens;
 
     private BigDecimal valorTotal;
+
+    @Enumerated(EnumType.STRING)
     private StatusPedidoEntity status;
     private LocalDateTime dataCriacao;
 

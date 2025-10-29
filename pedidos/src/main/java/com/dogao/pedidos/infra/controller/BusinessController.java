@@ -1,5 +1,6 @@
 package com.dogao.pedidos.infra.controller;
 
+import com.dogao.pedidos.application.usecases.CancelarPedidoUseCase;
 import com.dogao.pedidos.application.usecases.CriarPedidoUseCase;
 import com.dogao.pedidos.domain.Pedido;
 import com.dogao.pedidos.infra.controller.mapper.PedidoControllerMapper;
@@ -16,11 +17,13 @@ import java.util.List;
 public class BusinessController {
 
     private final CriarPedidoUseCase criarPedidoUseCase;
+    private final CancelarPedidoUseCase cancelarPedidoUseCase;
     private final PedidoControllerMapper mapper;
     private final PedidoJpaRepository repository;
 
-    public BusinessController(CriarPedidoUseCase criarPedidoUseCase, PedidoControllerMapper mapper, PedidoJpaRepository repository) {
+    public BusinessController(CriarPedidoUseCase criarPedidoUseCase, CancelarPedidoUseCase cancelarPedidoUseCase, PedidoControllerMapper mapper, PedidoJpaRepository repository) {
         this.criarPedidoUseCase = criarPedidoUseCase;
+        this.cancelarPedidoUseCase = cancelarPedidoUseCase;
         this.mapper = mapper;
         this.repository = repository;
     }
@@ -30,6 +33,13 @@ public class BusinessController {
         Pedido domain = mapper.toDomain(pedidoRequest);
         criarPedidoUseCase.execute(domain);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> cancelarPedido(@PathVariable("id") Long id) {
+        cancelarPedidoUseCase.executar(id);
+        return ResponseEntity.noContent().build();
+
     }
 
 }
