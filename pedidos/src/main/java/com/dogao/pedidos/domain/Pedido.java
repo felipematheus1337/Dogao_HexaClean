@@ -27,6 +27,7 @@ public class Pedido {
         this.dataCriacao = LocalDateTime.now();
     }
 
+
     private BigDecimal calcularValorTotal() {
         return itens.stream()
                 .map(Item::getValorTotal)

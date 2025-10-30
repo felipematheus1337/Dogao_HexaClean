@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@TableGenerator(name = "pedido")
+@Table(name = "pedido")
 public class PedidoEntity implements Serializable {
 
     @Id
