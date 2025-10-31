@@ -7,6 +7,7 @@ import com.dogao.pedidos.infra.persistence.PedidoJpaRepository;
 import com.dogao.pedidos.infra.persistence.entity.PedidoEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 @Component
 public class CriarPedidoJpaGateway implements CriarPedidoGateway {
@@ -24,6 +25,9 @@ public class CriarPedidoJpaGateway implements CriarPedidoGateway {
     @Transactional
     @Override
     public void criarPedido(Pedido pedido) {
+
+        Assert.notNull(pedido,"Pedido não pode ser vazio");
+        Assert.notNull(pedido.getItens(),"É necessário ter itens para salvar um pedido.");
 
         PedidoEntity entity = mapper.toEntity(pedido);
         PedidoEntity savedEntity = repository.save(entity);
