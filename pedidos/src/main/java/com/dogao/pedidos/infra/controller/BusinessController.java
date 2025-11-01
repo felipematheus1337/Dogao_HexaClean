@@ -8,6 +8,7 @@ import com.dogao.pedidos.infra.controller.mapper.PedidoControllerMapper;
 import com.dogao.pedidos.infra.controller.request.PedidoRequest;
 import com.dogao.pedidos.infra.controller.response.PedidoResponse;
 import com.dogao.pedidos.infra.persistence.PedidoJpaRepository;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +31,7 @@ public class BusinessController {
         this.repository = repository;
     }
 
+    @RateLimiter(name = "pedidoLimiter")
     @PostMapping
     public ResponseEntity<Void> criarUmPedido(@RequestBody PedidoRequest pedidoRequest) {
         Pedido domain = mapper.toDomain(pedidoRequest);

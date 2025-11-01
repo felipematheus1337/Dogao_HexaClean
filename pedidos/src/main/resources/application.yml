@@ -58,7 +58,7 @@ resilience4j.circuitbreaker:
 
 resilience4j.retry:
   instances:
-    estoqueService:
+    pedidoPublisher:
       maxAttempts: 3
       waitDuration: 500ms
 
@@ -66,3 +66,9 @@ resilience4j.timelimiter:
   instances:
     estoqueService:
       timeoutDuration: 2s
+
+resilience4j.ratelimiter:
+  instances:
+    pedidoLimiter:
+      timeoutDuration: 5s
+      limitForPeriod: 50

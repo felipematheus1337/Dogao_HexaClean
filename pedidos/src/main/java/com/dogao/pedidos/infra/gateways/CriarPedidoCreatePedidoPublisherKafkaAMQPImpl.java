@@ -4,6 +4,7 @@ import com.dogao.pedidos.infra.amqp.event.PedidoEvent;
 import com.dogao.pedidos.infra.amqp.exception.AMQPException;
 import com.dogao.pedidos.infra.amqp.mapper.PedidoEventMapper;
 import com.dogao.pedidos.infra.persistence.entity.PedidoEntity;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -23,6 +24,7 @@ public class CriarPedidoCreatePedidoPublisherKafkaAMQPImpl implements CreatePedi
         this.mapper = mapper;
     }
 
+    @Retry(name = "pedidoPublisher", fallbackMethod = "fallbackPublish")
     @Override
     public void publish(PedidoEntity entity) {
 
@@ -39,5 +41,11 @@ public class CriarPedidoCreatePedidoPublisherKafkaAMQPImpl implements CreatePedi
            throw new AMQPException("Falha ao publicar evento no Kafka");
         }
 
+    }
+
+
+    private void fallbackPublish(PedidoEntity entity) {
+        log.error("Falha ao processar pedido para a fila de pedido criado.");
+        // TO DO SCHEDULED PARA PEGAR ESSES PEDIDOS PENDENTES, E ENVIAR NOVAMENTE PARA A FILA.
     }
 }
