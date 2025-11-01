@@ -47,3 +47,22 @@ logging:
     root: INFO
     org.springframework.kafka: INFO
     com.dogaohexa: DEBUG
+
+resilience4j.circuitbreaker:
+  instances:
+    estoqueService:
+      slidingWindowSize: 5
+      minimumNumberOfCalls: 3
+      failureRateThreshold: 50
+      waitDurationInOpenState: 10s
+
+resilience4j.retry:
+  instances:
+    estoqueService:
+      maxAttempts: 3
+      waitDuration: 500ms
+
+resilience4j.timelimiter:
+  instances:
+    estoqueService:
+      timeoutDuration: 2s
