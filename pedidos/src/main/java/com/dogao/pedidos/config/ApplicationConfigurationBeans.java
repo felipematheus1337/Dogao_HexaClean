@@ -3,6 +3,7 @@ package com.dogao.pedidos.config;
 import com.dogao.pedidos.application.gateways.CancelarPedidoGateway;
 import com.dogao.pedidos.application.gateways.ConsultarPedidoGateway;
 import com.dogao.pedidos.application.gateways.CriarPedidoGateway;
+import com.dogao.pedidos.application.gateways.ValidarEstoqueGateway;
 import com.dogao.pedidos.application.usecases.CancelarPedidoUseCase;
 import com.dogao.pedidos.application.usecases.ConsultarPedidoUseCase;
 import com.dogao.pedidos.application.usecases.CriarPedidoUseCase;
@@ -27,5 +28,10 @@ public class ApplicationConfigurationBeans {
     @Bean
     public ConsultarPedidoUseCase consultarPedidoUseCase(ConsultarPedidoGateway consultarPedidoGateway) {
         return new ConsultarPedidoUseCase(consultarPedidoGateway);
+    }
+
+    @Bean
+    public ValidarEstoqueUseCase validarEstoqueUseCase(ValidarEstoqueGateway validarEstoqueGateway) {
+        return new ValidarEstoqueUseCase(validarEstoqueGateway);
     }
 }
