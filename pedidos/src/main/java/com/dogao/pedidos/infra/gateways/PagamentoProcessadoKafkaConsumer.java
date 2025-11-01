@@ -4,6 +4,7 @@ import com.dogao.pedidos.application.usecases.AtualizarPedidoStatusUseCase;
 import com.dogao.pedidos.infra.amqp.event.PagamentoProcessadoMessage;
 import com.dogao.pedidos.infra.amqp.exception.AMQPException;
 import com.dogao.pedidos.infra.factory.StatusPedidoFactory;
+import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.annotation.RetryableTopic;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -23,6 +24,7 @@ public class PagamentoProcessadoKafkaConsumer implements PagamentoProcessadoCons
     @KafkaListener(topics = "pagamento.processado")
     @RetryableTopic(attempts = "3", backoff = @Backoff(delay = 2000))
     @Override
+    @Bulkhead(name = "processamento-pagamento-bulkhead", type = Bulkhead.Type.THREADPOOL)
     public void subscribe(@Payload PagamentoProcessadoMessage message) {
 
         if (message == null) throw new AMQPException("payload de status após pagamento está null.");
